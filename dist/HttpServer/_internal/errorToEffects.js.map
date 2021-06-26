@@ -1,0 +1,1 @@
+{"version":3,"file":"errorToEffects.js","sourceRoot":"","sources":["../../../src/HttpServer/_internal/errorToEffects.ts"],"names":[],"mappings":";;;AAEA,SAAgB,cAAc,CAAC,GAAU;IACvC,OAAO,CAAC,KAAK,CAAC,GAAG,CAAC,CAAC;IAEnB,OAAO;QACL;YACE,IAAI,EAAE,UAAU;YAChB,OAAO,EAAE;gBACP,gBAAgB,EAAE,GAAG,CAAC,OAAO;aAC9B;SACF;KACF,CAAC;AACJ,CAAC;AAXD,wCAWC"}
