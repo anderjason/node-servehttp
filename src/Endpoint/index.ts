@@ -57,9 +57,11 @@ export type EndpointEffect<T = any> =
   | SetStatusCodeEffect
   | InvalidateEffect;
 
+export type EndpointResponse<T = any> = EndpointEffect<T>[];
+
 export type EndpointHandler = (
   request: EndpointRequest
-) => Promise<EndpointEffect[]>;
+) => Promise<EndpointResponse>;
 
 interface EndpointDefinition {
   relativePath: string | RegExp;

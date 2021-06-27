@@ -41,7 +41,8 @@ export interface InvalidateEffect {
     endpoints: string[];
 }
 export declare type EndpointEffect<T = any> = SendJsonEffect<T> | SendCustomBodyEffect | SendFileEffect | MergeHeadersEffect | MergeSessionPropertiesEffect | SetStatusCodeEffect | InvalidateEffect;
-export declare type EndpointHandler = (request: EndpointRequest) => Promise<EndpointEffect[]>;
+export declare type EndpointResponse<T = any> = EndpointEffect<T>[];
+export declare type EndpointHandler = (request: EndpointRequest) => Promise<EndpointResponse>;
 interface EndpointDefinition {
     relativePath: string | RegExp;
     handleGet?: EndpointHandler;
