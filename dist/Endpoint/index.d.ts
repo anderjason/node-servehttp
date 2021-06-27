@@ -4,7 +4,7 @@ import { LocalFile } from "@anderjason/node-filesystem";
 import { OutgoingHttpHeaders } from "http2";
 import { IncomingHttpHeaders } from "http2";
 import { HttpMethod } from "../HttpServer";
-export interface EndpointRequest<TParams = Dict<unknown>, TBody = unknown> {
+export interface EndpointRequest<TParams = any, TBody = any> {
     body: TBody;
     headers: IncomingHttpHeaders;
     method: HttpMethod;
