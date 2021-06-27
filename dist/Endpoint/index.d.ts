@@ -11,9 +11,9 @@ export interface EndpointRequest<TParams = Dict<unknown>, TBody = unknown> {
     relativePath: string;
     requestParams: TParams;
 }
-export interface SendJsonEffect {
+export interface SendJsonEffect<T = unknown> {
     type: "sendJson";
-    content: any;
+    content: T;
 }
 export interface SendCustomBodyEffect {
     type: "sendCustomBody";
@@ -40,7 +40,7 @@ export interface InvalidateEffect {
     type: "invalidate";
     endpoints: string[];
 }
-export declare type EndpointEffect = SendJsonEffect | SendCustomBodyEffect | SendFileEffect | MergeHeadersEffect | MergeSessionPropertiesEffect | SetStatusCodeEffect | InvalidateEffect;
+export declare type EndpointEffect<T = unknown> = SendJsonEffect<T> | SendCustomBodyEffect | SendFileEffect | MergeHeadersEffect | MergeSessionPropertiesEffect | SetStatusCodeEffect | InvalidateEffect;
 export declare type EndpointHandler = (request: EndpointRequest) => Promise<EndpointEffect[]>;
 interface EndpointDefinition {
     relativePath: string | RegExp;
