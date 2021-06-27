@@ -4,12 +4,12 @@ import { LocalFile } from "@anderjason/node-filesystem";
 import { OutgoingHttpHeaders } from "http2";
 import { IncomingHttpHeaders } from "http2";
 import { HttpMethod } from "../HttpServer";
-export interface EndpointRequest {
-    body: any | undefined;
+export interface EndpointRequest<TParams = Dict<unknown>, TBody = unknown> {
+    body: TBody;
     headers: IncomingHttpHeaders;
     method: HttpMethod;
     relativePath: string;
-    requestParams: Dict<any>;
+    requestParams: TParams;
 }
 export interface SendJsonEffect {
     type: "sendJson";
