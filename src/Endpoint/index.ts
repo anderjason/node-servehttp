@@ -12,7 +12,7 @@ export interface EndpointRequest<TParams = Dict<unknown>, TBody = unknown> {
   requestParams: TParams;
 }
 
-export interface SendJsonEffect<T = unknown> {
+export interface SendJsonEffect<T = any> {
   type: "sendJson";
   content: T;
 }
@@ -48,7 +48,7 @@ export interface InvalidateEffect {
   endpoints: string[];
 }
 
-export type EndpointEffect<T = unknown> =
+export type EndpointEffect<T = any> =
   | SendJsonEffect<T>
   | SendCustomBodyEffect
   | SendFileEffect
