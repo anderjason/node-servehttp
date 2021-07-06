@@ -41,7 +41,7 @@ class HttpServer extends skytree_1.Actor {
                     method = "GET";
                 }
                 if (!knownMethods.has(method)) {
-                    throw new Error("Unsupported method");
+                    throw new Error(`Unsupported method '${method}'`);
                 }
                 const endpointRequest = {
                     headers,

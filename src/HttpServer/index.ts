@@ -74,7 +74,7 @@ export class HttpServer extends Actor<HttpServerProps> {
       }
 
       if (!knownMethods.has(method)) {
-        throw new Error("Unsupported method");
+        throw new Error(`Unsupported method '${method}'`);
       }
 
       const endpointRequest: EndpointRequest = {
