@@ -36,6 +36,15 @@ async function applyEndpointEffects(endpointEffects, req, res, cacheDirectory, c
     else {
         res.statusCode = 200;
     }
+    endpointEffects.unshift({
+        type: "mergeHeaders",
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Headers": req.headers["access-control-request-headers"] || "Content-Type",
+        },
+    });
     try {
         await util_1.PromiseUtil.asyncSequenceGivenArrayAndCallback(endpointEffects, async (effect) => {
             switch (effect.type) {

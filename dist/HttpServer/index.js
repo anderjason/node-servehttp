@@ -30,6 +30,10 @@ class HttpServer extends skytree_1.Actor {
                 // const session = await tryGetSession(req);
                 const session = new Session_1.Session();
                 const headers = {};
+                headers["Access-Control-Allow-Origin"] = "*";
+                headers["Access-Control-Allow-Methods"] = "*";
+                headers["Access-Control-Allow-Credentials"] = "true";
+                headers["Access-Control-Allow-Headers"] = req.headers["access-control-request-headers"];
                 Object.keys(req.headers).forEach((key) => {
                     const val = req.headers[key];
                     if (val != null) {

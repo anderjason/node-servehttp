@@ -60,6 +60,10 @@ export class HttpServer extends Actor<HttpServerProps> {
       const session = new Session();
       
       const headers: Dict<string> = {};
+      headers["Access-Control-Allow-Origin"] = "*";
+      headers["Access-Control-Allow-Methods"] = "*";
+      headers["Access-Control-Allow-Credentials"] = "true";
+      headers["Access-Control-Allow-Headers"] = req.headers["access-control-request-headers"];
 
       Object.keys(req.headers).forEach((key) => {
         const val = req.headers[key];

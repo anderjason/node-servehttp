@@ -30,7 +30,7 @@ async function ensureSession(
 
   res.setHeader(
     "Set-Cookie",
-    cookieHeader("session", session.sessionKey!)  // TODO configure cookie name
+    cookieHeader("session", session.sessionKey!) // TODO configure cookie name
   );
 
   return session;
@@ -41,7 +41,7 @@ export async function applyEndpointEffects(
   req: http.IncomingMessage,
   res: http.ServerResponse,
   cacheDirectory: LocalDirectory,
-  currentSession?: Session,
+  currentSession?: Session
 ): Promise<void> {
   const session = await ensureSession(currentSession, res);
 
@@ -64,6 +64,16 @@ export async function applyEndpointEffects(
   } else {
     res.statusCode = 200;
   }
+
+  endpointEffects.unshift({
+    type: "mergeHeaders",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "*",
+      "Access-Control-Allow-Credentials": "true",
+      "Access-Control-Allow-Headers": req.headers["access-control-request-headers"] || "Content-Type",
+    },
+  });
 
   try {
     await PromiseUtil.asyncSequenceGivenArrayAndCallback(
