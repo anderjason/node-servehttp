@@ -4,6 +4,7 @@ import { Endpoint, EndpointHandler } from "../../Endpoint";
 import { HttpMethod } from "..";
 import { handleNotFound } from "./handleNotFound";
 import { handleStatic } from "./handleStatic";
+import { handleOptions } from "./handleOptions";
 
 function optionalEndpointHavingRelativePath(
   relativePath: string,
@@ -49,6 +50,9 @@ export function getHandler(
 
   let handler: EndpointHandler | undefined = undefined;
   switch (method) {
+    case "OPTIONS":
+      handler = handleOptions;
+      break;
     case "GET":
       handler = endpoint.handleGet;
       break;

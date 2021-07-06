@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getHandler = void 0;
 const handleNotFound_1 = require("./handleNotFound");
+const handleOptions_1 = require("./handleOptions");
 function optionalEndpointHavingRelativePath(relativePath, endpoints) {
     return endpoints.find(e => {
         const endpointRelativePath = e.relativePath;
@@ -30,6 +31,9 @@ function getHandler(request, endpoints, method, urlParts) {
     }
     let handler = undefined;
     switch (method) {
+        case "OPTIONS":
+            handler = handleOptions_1.handleOptions;
+            break;
         case "GET":
             handler = endpoint.handleGet;
             break;

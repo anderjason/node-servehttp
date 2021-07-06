@@ -10,7 +10,7 @@ const applyEndpointEffects_1 = require("./_internal/applyEndpointEffects");
 const Session_1 = require("../Session");
 const errorToEffects_1 = require("./_internal/errorToEffects");
 const getHandler_1 = require("./_internal/getHandler");
-const knownMethods = new Set(["GET", "PUT", "POST", "DELETE"]);
+const knownMethods = new Set(["GET", "PUT", "POST", "DELETE", "OPTIONS"]);
 class HttpServer extends skytree_1.Actor {
     constructor() {
         super(...arguments);

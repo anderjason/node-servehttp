@@ -10,8 +10,8 @@ import { errorToEffects } from "./_internal/errorToEffects";
 import { getHandler } from "./_internal/getHandler";
 import { LocalDirectory } from "@anderjason/node-filesystem";
 
-export type HttpMethod = "HEAD" | "GET" | "PUT" | "POST" | "DELETE";
-const knownMethods: Set<HttpMethod> = new Set(["GET", "PUT", "POST", "DELETE"]);
+export type HttpMethod = "HEAD" | "GET" | "PUT" | "POST" | "DELETE" | "OPTIONS";
+const knownMethods: Set<HttpMethod> = new Set(["GET", "PUT", "POST", "DELETE", "OPTIONS"]);
 
 export interface HttpServerProps {
   port: number;
