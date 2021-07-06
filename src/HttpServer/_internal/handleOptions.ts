@@ -5,7 +5,9 @@ export async function handleOptions(): Promise<EndpointEffect[]> {
     {
       type: "mergeHeaders",
       headers: {
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*",
+        "Access-Control-Allow-Credentials": "true"
       }
     }
   ];
