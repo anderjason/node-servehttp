@@ -21,16 +21,16 @@
   "dependencies": {
     "@anderjason/node-crypto": "^2.0.0",
     "@anderjason/node-filesystem": "^2.0.1",
-    "@anderjason/observable": "^3.2.1",
-    "@anderjason/time": "^2.0.2",
-    "@anderjason/util": "^2.0.6",
+    "@anderjason/observable": "^3.2.2",
+    "@anderjason/time": "^2.1.1",
+    "@anderjason/util": "^2.2.0",
     "send": "^0.17.1",
-    "skytree": "^9.3.1"
+    "skytree": "git+https://github.com/anderjason/skytree.git"
   },
   "devDependencies": {
-    "@types/node": "^15.6.1",
-    "@types/send": "^0.17.0",
-    "typescript": "^4.3.2"
+    "@types/node": "^16.3.1",
+    "@types/send": "^0.17.1",
+    "typescript": "^4.3.5"
   },
   "bugs": {
     "url": "https://github.com/anderjason/node-servehttp/issues"
