@@ -1,5 +1,6 @@
 import { Actor } from "skytree";
 import * as http from "http";
+import * as WebSocket from "ws";
 import * as url from "url";
 import { Dict, Observable, ReadOnlyObservable, Receipt } from "@anderjason/observable";
 import { getRequestBody } from "./_internal/getRequestBody";
@@ -9,6 +10,7 @@ import { Session } from "../Session";
 import { errorToEffects } from "./_internal/errorToEffects";
 import { getHandler } from "./_internal/getHandler";
 import { LocalDirectory } from "@anderjason/node-filesystem";
+import { handleWebSocket } from "./_internal/handleWebSocket";
 
 export type HttpMethod = "HEAD" | "GET" | "PUT" | "POST" | "DELETE" | "OPTIONS";
 const knownMethods: Set<HttpMethod> = new Set(["GET", "PUT", "POST", "DELETE", "OPTIONS"]);
@@ -25,6 +27,9 @@ export class HttpServer extends Actor<HttpServerProps> {
 
   onActivate() {
     const httpServer = http.createServer(this.handleRequest);
+
+    const webSocketServer = new WebSocket.Server({ server: httpServer });
+    webSocketServer.on("connection", handleWebSocket);
 
     httpServer.listen(this.props.port, () => {
       this._isListening.setValue(true);
