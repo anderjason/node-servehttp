@@ -27,17 +27,16 @@ export class WebsocketConnection extends Actor<WebsocketConnectionProps> {
     );
   }
 
-  private onMessage(messageData: any) {
-    console.log("message", messageData);
+  private onMessage = (messageData: any) => {
     this.props.onReceiveMessage(JSON.parse(messageData));
   }
 
-  private onClose() {
+  private onClose = () => {
     console.log("Client disconnected");
     this.props.onClosed(this);
   }
 
-  private onError(err: Error) {
+  private onError = (err: Error) => {
     console.error(err);
   }
 

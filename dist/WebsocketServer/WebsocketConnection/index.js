@@ -4,6 +4,19 @@ exports.WebsocketConnection = void 0;
 const skytree_1 = require("skytree");
 const observable_1 = require("@anderjason/observable");
 class WebsocketConnection extends skytree_1.Actor {
+    constructor() {
+        super(...arguments);
+        this.onMessage = (messageData) => {
+            this.props.onReceiveMessage(JSON.parse(messageData));
+        };
+        this.onClose = () => {
+            console.log("Client disconnected");
+            this.props.onClosed(this);
+        };
+        this.onError = (err) => {
+            console.error(err);
+        };
+    }
     onActivate() {
         const { ws } = this.props;
         ws.on("message", this.onMessage);
@@ -14,17 +27,6 @@ class WebsocketConnection extends skytree_1.Actor {
             ws.off("close", this.onClose);
             ws.off("error", this.onError);
         }));
-    }
-    onMessage(messageData) {
-        console.log("message", messageData);
-        this.props.onReceiveMessage(JSON.parse(messageData));
-    }
-    onClose() {
-        console.log("Client disconnected");
-        this.props.onClosed(this);
-    }
-    onError(err) {
-        console.error(err);
     }
 }
 exports.WebsocketConnection = WebsocketConnection;
