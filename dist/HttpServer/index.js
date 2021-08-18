@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.HttpServer = void 0;
 const skytree_1 = require("skytree");
 const http = require("http");
-const WebSocket = require("ws");
 const url = require("url");
 const observable_1 = require("@anderjason/observable");
 const getRequestBody_1 = require("./_internal/getRequestBody");
@@ -11,7 +10,7 @@ const applyEndpointEffects_1 = require("./_internal/applyEndpointEffects");
 const Session_1 = require("../Session");
 const errorToEffects_1 = require("./_internal/errorToEffects");
 const getHandler_1 = require("./_internal/getHandler");
-const handleWebSocket_1 = require("./_internal/handleWebSocket");
+const WebsocketServer_1 = require("../WebsocketServer");
 const knownMethods = new Set(["GET", "PUT", "POST", "DELETE", "OPTIONS"]);
 class HttpServer extends skytree_1.Actor {
     constructor() {
@@ -69,10 +68,14 @@ class HttpServer extends skytree_1.Actor {
             }
         };
     }
+    get websocketServer() {
+        return this._websocketServer;
+    }
     onActivate() {
         const httpServer = http.createServer(this.handleRequest);
-        const webSocketServer = new WebSocket.Server({ server: httpServer });
-        webSocketServer.on("connection", handleWebSocket_1.handleWebSocket);
+        this._websocketServer = this.addActor(new WebsocketServer_1.WebsocketServer({
+            httpServer
+        }));
         httpServer.listen(this.props.port, () => {
             this._isListening.setValue(true);
         });
