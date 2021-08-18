@@ -3,10 +3,15 @@ import { WebsocketServer } from "..";
 import * as WebSocket from "ws";
 import { Receipt } from "@anderjason/observable";
 
+export interface IncomingWebsocketMessage {
+  connection: WebsocketConnection;
+  data: any;
+}
+
 export interface WebsocketConnectionProps {
   websocketServer: WebsocketServer;
   ws: WebSocket;
-  onReceiveMessage: (message: any) => void;
+  onReceiveMessage: (message: IncomingWebsocketMessage) => void;
   onClosed: (connection: WebsocketConnection) => void;
 }
 
@@ -27,8 +32,16 @@ export class WebsocketConnection extends Actor<WebsocketConnectionProps> {
     );
   }
 
+  sendJson(obj: any) {
+    console.log("send", obj);
+    this.props.ws.send(JSON.stringify(obj));
+  }
+
   private onMessage = (messageData: any) => {
-    this.props.onReceiveMessage(JSON.parse(messageData));
+    this.props.onReceiveMessage({
+      connection: this,
+      data: JSON.parse(messageData)
+    });
   }
 
   private onClose = () => {

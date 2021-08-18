@@ -7,7 +7,10 @@ class WebsocketConnection extends skytree_1.Actor {
     constructor() {
         super(...arguments);
         this.onMessage = (messageData) => {
-            this.props.onReceiveMessage(JSON.parse(messageData));
+            this.props.onReceiveMessage({
+                connection: this,
+                data: JSON.parse(messageData)
+            });
         };
         this.onClose = () => {
             console.log("Client disconnected");
@@ -27,6 +30,10 @@ class WebsocketConnection extends skytree_1.Actor {
             ws.off("close", this.onClose);
             ws.off("error", this.onError);
         }));
+    }
+    sendJson(obj) {
+        console.log("send", obj);
+        this.props.ws.send(JSON.stringify(obj));
     }
 }
 exports.WebsocketConnection = WebsocketConnection;

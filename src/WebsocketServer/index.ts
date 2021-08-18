@@ -1,7 +1,7 @@
 import * as http from "http";
 import * as WebSocket from "ws";
 import { Actor } from "skytree";
-import { WebsocketConnection } from "./WebsocketConnection";
+import { IncomingWebsocketMessage, WebsocketConnection } from "./WebsocketConnection";
 import { TypedEvent } from "@anderjason/observable";
 
 export interface WebsocketServerProps {
@@ -11,7 +11,7 @@ export interface WebsocketServerProps {
 export class WebsocketServer extends Actor<WebsocketServerProps> {
   private _connections = new Set<WebsocketConnection>();
 
-  readonly didReceiveMessage = new TypedEvent<any>();
+  readonly didReceiveMessage = new TypedEvent<IncomingWebsocketMessage>();
 
   onActivate() {
     const webSocketServer = new WebSocket.Server({
