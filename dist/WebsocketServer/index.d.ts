@@ -10,5 +10,6 @@ export declare class WebsocketServer extends Actor<WebsocketServerProps> {
     private _connections;
     readonly didReceiveMessage: TypedEvent<IncomingWebsocketMessage>;
     onActivate(): void;
+    broadcastJson(obj: any): void;
     private onConnectionClosed;
 }

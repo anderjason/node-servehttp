@@ -32,6 +32,12 @@ export class WebsocketServer extends Actor<WebsocketServerProps> {
     });
   }
 
+  broadcastJson(obj: any): void {
+    this._connections.forEach(connection => {
+      connection.sendJson(obj);
+    })
+  }
+  
   private onConnectionClosed(connection: WebsocketConnection) {
     this.removeActor(connection);
     this._connections.delete(connection);

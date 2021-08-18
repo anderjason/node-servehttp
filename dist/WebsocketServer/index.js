@@ -24,6 +24,11 @@ class WebsocketServer extends skytree_1.Actor {
             })));
         });
     }
+    broadcastJson(obj) {
+        this._connections.forEach(connection => {
+            connection.sendJson(obj);
+        });
+    }
     onConnectionClosed(connection) {
         this.removeActor(connection);
         this._connections.delete(connection);
