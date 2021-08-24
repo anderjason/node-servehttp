@@ -32,7 +32,6 @@ class WebsocketConnection extends skytree_1.Actor {
         }));
     }
     sendJson(obj) {
-        console.log("send", obj);
         this.props.ws.send(JSON.stringify(obj));
     }
 }

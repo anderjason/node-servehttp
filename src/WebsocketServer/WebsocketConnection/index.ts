@@ -33,7 +33,6 @@ export class WebsocketConnection extends Actor<WebsocketConnectionProps> {
   }
 
   sendJson(obj: any) {
-    console.log("send", obj);
     this.props.ws.send(JSON.stringify(obj));
   }
 
