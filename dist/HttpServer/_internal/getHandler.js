@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getHandler = void 0;
 const handleNotFound_1 = require("./handleNotFound");
+const handleStatic_1 = require("./handleStatic");
 const handleOptions_1 = require("./handleOptions");
 function optionalEndpointHavingRelativePath(relativePath, endpoints) {
     return endpoints.find(e => {
@@ -15,7 +16,7 @@ function optionalEndpointHavingRelativePath(relativePath, endpoints) {
         return false;
     });
 }
-function getHandler(request, endpoints, method, urlParts) {
+function getHandler(request, endpoints, sharedFiles, fallbackFile, method, urlParts) {
     if (urlParts.pathname == null) {
         return handleNotFound_1.handleNotFound;
     }
@@ -25,9 +26,7 @@ function getHandler(request, endpoints, method, urlParts) {
     }
     let endpoint = optionalEndpointHavingRelativePath(requestRelativePath, endpoints);
     if (endpoint == null) {
-        if (endpoint == null) {
-            return handleNotFound_1.handleNotFound;
-        }
+        return handleStatic_1.handleStatic(sharedFiles, fallbackFile);
     }
     let handler = undefined;
     switch (method) {

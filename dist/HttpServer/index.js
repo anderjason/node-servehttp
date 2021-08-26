@@ -51,7 +51,7 @@ class HttpServer extends skytree_1.Actor {
                     requestParams: params,
                     body: body,
                 };
-                const handler = getHandler_1.getHandler(req, this.props.endpoints, method, urlParts);
+                const handler = getHandler_1.getHandler(req, this.props.endpoints, this.props.sharedFiles, this.props.fallbackFile, method, urlParts);
                 let endpointEffects;
                 try {
                     endpointEffects = await handler(endpointRequest);

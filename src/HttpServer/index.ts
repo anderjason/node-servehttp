@@ -8,9 +8,9 @@ import { applyEndpointEffects } from "./_internal/applyEndpointEffects";
 import { Session } from "../Session";
 import { errorToEffects } from "./_internal/errorToEffects";
 import { getHandler } from "./_internal/getHandler";
-import { LocalDirectory } from "@anderjason/node-filesystem";
-import { WebsocketConnection } from "../WebsocketServer/WebsocketConnection";
+import { LocalDirectory, LocalFile } from "@anderjason/node-filesystem";
 import { WebsocketServer } from "../WebsocketServer";
+import { HttpSharedFile } from "../HttpSharedFile";
 
 export type HttpMethod = "HEAD" | "GET" | "PUT" | "POST" | "DELETE" | "OPTIONS";
 const knownMethods: Set<HttpMethod> = new Set(["GET", "PUT", "POST", "DELETE", "OPTIONS"]);
@@ -19,6 +19,9 @@ export interface HttpServerProps {
   port: number;
   endpoints: Endpoint[];
   cacheDirectory: LocalDirectory;
+  
+  sharedFiles?: HttpSharedFile[];
+  fallbackFile?: LocalFile;
 }
 
 export class HttpServer extends Actor<HttpServerProps> {
@@ -99,7 +102,7 @@ export class HttpServer extends Actor<HttpServerProps> {
         body: body,
       };
 
-      const handler = getHandler(req, this.props.endpoints, method, urlParts);
+      const handler = getHandler(req, this.props.endpoints, this.props.sharedFiles, this.props.fallbackFile, method, urlParts);
 
       let endpointEffects;
       try {

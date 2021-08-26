@@ -4,6 +4,12 @@ exports.handleNotFound = void 0;
 function handleNotFound() {
     return Promise.resolve([
         {
+            type: "mergeHeaders",
+            headers: {
+                "X-Served-By": "node-servehttp"
+            }
+        },
+        {
             type: "setStatusCode",
             code: 404
         }

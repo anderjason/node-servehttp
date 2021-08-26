@@ -1,50 +1,43 @@
-/**
- * @author Jason Anderson
- * @copyright 2016-2020 Jason Anderson
- * @license See vendor/wireframe/LICENSE file
- */
-
 import { LocalFile } from "@anderjason/node-filesystem";
 import {
-  EndpointRequest,
   EndpointEffect,
-  SendFileEffect,
+  EndpointRequest, SendFileEffect
 } from "../../Endpoint";
 import { HttpSharedFile } from "../../HttpSharedFile";
-import { LocalDirectory } from "@anderjason/node-filesystem";
+import { handleNotFound } from "./handleNotFound";
 
-export async function handleStatic(
-  req: EndpointRequest
-): Promise<EndpointEffect[]> {
-  // TODO
-  return [];
-  
-  // const publicDirectory = LocalDirectory.givenRelativePath(
-  //   RunContext.instance.mainDirectory,
-  //   "public"
-  // );
+export function handleStatic(
+  sharedFiles?: HttpSharedFile[],
+  fallbackFile?: LocalFile
+) {
+  if (sharedFiles == null) {
+    return handleNotFound;
+  }
 
-  // const relativeUrl = req.relativePath.replace(/^\/?(.*)/, "$1");
+  return async (req: EndpointRequest): Promise<EndpointEffect[]> => {
+    const relativeUrl = req.relativePath.replace(/^\/?(.*)/, "$1");
 
-  // let serverAbsoluteFile: LocalFile;
+    let serverAbsoluteFile: LocalFile;
 
-  // const publicFile = HttpSharedFile.registry.toOptionalValueHavingKey(
-  //   relativeUrl
-  // );
+    const publicFile = sharedFiles.find(
+      (sf) => sf.toRelativeUrl() == relativeUrl
+    );
 
-  // if (publicFile != null) {
-  //   serverAbsoluteFile = publicFile.toLocalFile();
-  // } else {
-  //   serverAbsoluteFile = LocalFile.givenRelativePath(
-  //     publicDirectory,
-  //     "index.html"
-  //   );
-  // }
+    if (publicFile != null) {
+      serverAbsoluteFile = publicFile.toLocalFile();
+    } else {
+      if (fallbackFile == null) {
+        return handleNotFound();
+      }
 
-  // return [
-  //   {
-  //     type: "sendFile",
-  //     file: serverAbsoluteFile,
-  //   } as SendFileEffect,
-  // ];
+      serverAbsoluteFile = fallbackFile;
+    }
+
+    return [
+      {
+        type: "sendFile",
+        file: serverAbsoluteFile,
+      } as SendFileEffect,
+    ];
+  };
 }

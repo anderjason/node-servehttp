@@ -5,6 +5,8 @@ import { HttpMethod } from "..";
 import { handleNotFound } from "./handleNotFound";
 import { handleStatic } from "./handleStatic";
 import { handleOptions } from "./handleOptions";
+import { HttpSharedFile } from "../../HttpSharedFile";
+import { LocalFile } from "@anderjason/node-filesystem";
 
 function optionalEndpointHavingRelativePath(
   relativePath: string,
@@ -28,6 +30,8 @@ function optionalEndpointHavingRelativePath(
 export function getHandler(
   request: http.IncomingMessage,
   endpoints: Endpoint[],
+  sharedFiles: HttpSharedFile[],
+  fallbackFile: LocalFile,
   method: HttpMethod,
   urlParts: url.Url
 ): EndpointHandler {
@@ -43,9 +47,7 @@ export function getHandler(
   let endpoint = optionalEndpointHavingRelativePath(requestRelativePath, endpoints);
 
   if (endpoint == null) {
-    if (endpoint == null) {
-      return handleNotFound;
-    }
+    return handleStatic(sharedFiles, fallbackFile);
   }
 
   let handler: EndpointHandler | undefined = undefined;
