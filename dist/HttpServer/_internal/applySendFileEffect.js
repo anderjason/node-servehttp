@@ -30,13 +30,16 @@ async function applySendFileEffect(effect, context, cacheDirectory) {
     const filename = effect.file.toAbsolutePath();
     const size = await effect.file.toSize();
     const modifiedAt = await effect.file.toModifiedInstant();
-    const cacheKey = node_crypto_1.UnsaltedHash.givenUnhashedString(`${filename}:${size.toBytes()}:${modifiedAt.toEpochMilliseconds()}`).toHashedString();
-    const cacheFile = node_filesystem_1.LocalFile.givenRelativePath(cacheDirectory, cacheKey.slice(0, 2), cacheKey.slice(0, 24) + effect.file.toExtension());
-    const isAvailable = await cacheFile.isAccessible();
-    if (!isAvailable) {
-        await gzipFile(effect.file, cacheFile);
+    let cacheFile;
+    if (cacheDirectory != null) {
+        const cacheKey = node_crypto_1.UnsaltedHash.givenUnhashedString(`${filename}:${size.toBytes()}:${modifiedAt.toEpochMilliseconds()}`).toHashedString();
+        cacheFile = node_filesystem_1.LocalFile.givenRelativePath(cacheDirectory, cacheKey.slice(0, 2), cacheKey.slice(0, 24) + effect.file.toExtension());
+        const isAvailable = await cacheFile.isAccessible();
+        if (!isAvailable) {
+            await gzipFile(effect.file, cacheFile);
+        }
     }
-    const acceptsGzip = acceptsGzipGivenEffectContext_1.acceptsGzipGivenEffectContext(context);
+    const acceptsGzip = cacheFile != null && acceptsGzipGivenEffectContext_1.acceptsGzipGivenEffectContext(context);
     return new Promise((resolve, reject) => {
         const selectedFile = acceptsGzip ? cacheFile : effect.file;
         // create send stream
