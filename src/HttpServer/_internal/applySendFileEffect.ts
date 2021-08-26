@@ -38,71 +38,69 @@ export async function applySendFileEffect(
   context: EffectContext,
   cacheDirectory: LocalDirectory
 ): Promise<void> {
-  // TODO
-  
-  // const filename = effect.file.toAbsolutePath();
-  // const size = await effect.file.toSize();
-  // const modifiedAt = await effect.file.toModifiedInstant();
+  const filename = effect.file.toAbsolutePath();
+  const size = await effect.file.toSize();
+  const modifiedAt = await effect.file.toModifiedInstant();
 
-  // const cacheKey = UnsaltedHash.givenUnhashedString(
-  //   `${filename}:${size.toBytes()}:${modifiedAt.toEpochMilliseconds()}`
-  // ).toHashedString();
+  const cacheKey = UnsaltedHash.givenUnhashedString(
+    `${filename}:${size.toBytes()}:${modifiedAt.toEpochMilliseconds()}`
+  ).toHashedString();
 
-  // const cacheFile = LocalFile.givenRelativePath(
-  //   cacheDirectory,
-  //   cacheKey.slice(0, 2),
-  //   cacheKey.slice(0, 24) + effect.file.toExtension()
-  // );
+  const cacheFile = LocalFile.givenRelativePath(
+    cacheDirectory,
+    cacheKey.slice(0, 2),
+    cacheKey.slice(0, 24) + effect.file.toExtension()
+  );
 
-  // const isAvailable = await cacheFile.isAccessible();
-  // if (!isAvailable) {
-  //   await gzipFile(effect.file, cacheFile);
-  // }
+  const isAvailable = await cacheFile.isAccessible();
+  if (!isAvailable) {
+    await gzipFile(effect.file, cacheFile);
+  }
 
-  // const acceptsGzip = acceptsGzipGivenEffectContext(context);
+  const acceptsGzip = acceptsGzipGivenEffectContext(context);
 
-  // return new Promise((resolve, reject) => {
-  //   const selectedFile = acceptsGzip ? cacheFile : effect.file;
+  return new Promise((resolve, reject) => {
+    const selectedFile = acceptsGzip ? cacheFile : effect.file;
 
-  //   // create send stream
-  //   const stream = send(context.req, selectedFile.toAbsolutePath());
+    // create send stream
+    const stream = send(context.req, selectedFile.toAbsolutePath());
 
-  //   if (acceptsGzip) {
-  //     stream.on("headers", (res, path, stat) => {
-  //       res.setHeader("Content-Encoding", "gzip");
-  //     });
-  //   }
+    if (acceptsGzip) {
+      stream.on("headers", (res, path, stat) => {
+        res.setHeader("Content-Encoding", "gzip");
+      });
+    }
 
-  //   // add directory handler
-  //   stream.on("directory", () => {
-  //     try {
-  //       context.res.statusCode = 404;
-  //       resolve();
-  //       return;
-  //     } catch (err) {
-  //       console.error(err);
-  //       reject(err);
-  //     }
-  //   });
+    // add directory handler
+    stream.on("directory", () => {
+      try {
+        context.res.statusCode = 404;
+        resolve();
+        return;
+      } catch (err) {
+        console.error(err);
+        reject(err);
+      }
+    });
 
-  //   // forward errors
-  //   stream.on("error", (err) => {
-  //     console.error(err);
+    // forward errors
+    stream.on("error", (err) => {
+      console.error(err);
 
-  //     try {
-  //       reject(err);
-  //       return;
-  //     } catch (err) {
-  //       console.error(err);
-  //       reject(err);
-  //     }
-  //   });
+      try {
+        reject(err);
+        return;
+      } catch (err) {
+        console.error(err);
+        reject(err);
+      }
+    });
 
-  //   stream.on("end", () => {
-  //     resolve();
-  //   });
+    stream.on("end", () => {
+      resolve();
+    });
 
-  //   // pipe
-  //   stream.pipe(context.res);
-  // });
+    // pipe
+    stream.pipe(context.res);
+  });
 }
