@@ -10,7 +10,7 @@ export function handleStatic(
   sharedFiles?: HttpSharedFile[],
   fallbackFile?: LocalFile
 ) {
-  if (sharedFiles == null) {
+  if (sharedFiles == null && fallbackFile == null) {
     return handleNotFound;
   }
 
@@ -19,9 +19,12 @@ export function handleStatic(
 
     let serverAbsoluteFile: LocalFile;
 
-    const publicFile = sharedFiles.find(
-      (sf) => sf.toRelativeUrl() == relativeUrl
-    );
+    let publicFile: HttpSharedFile;
+    if (sharedFiles != null) {
+      publicFile = sharedFiles.find(
+        (sf) => sf.toRelativeUrl() == relativeUrl
+      );
+    }
 
     if (publicFile != null) {
       serverAbsoluteFile = publicFile.toLocalFile();
