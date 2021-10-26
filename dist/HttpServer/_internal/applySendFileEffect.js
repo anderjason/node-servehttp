@@ -39,7 +39,7 @@ async function applySendFileEffect(effect, context, cacheDirectory) {
             await gzipFile(effect.file, cacheFile);
         }
     }
-    const acceptsGzip = cacheFile != null && acceptsGzipGivenEffectContext_1.acceptsGzipGivenEffectContext(context);
+    const acceptsGzip = cacheFile != null && (0, acceptsGzipGivenEffectContext_1.acceptsGzipGivenEffectContext)(context);
     return new Promise((resolve, reject) => {
         const selectedFile = acceptsGzip ? cacheFile : effect.file;
         // create send stream

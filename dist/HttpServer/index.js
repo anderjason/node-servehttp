@@ -21,7 +21,7 @@ class HttpServer extends skytree_1.Actor {
             try {
                 const urlParts = url.parse(req.url, true);
                 let params = undefined;
-                const body = await getRequestBody_1.getRequestBody(req);
+                const body = await (0, getRequestBody_1.getRequestBody)(req);
                 if (body != null && typeof body === "object") {
                     params = Object.assign(Object.assign({}, urlParts.query), body);
                 }
@@ -51,15 +51,15 @@ class HttpServer extends skytree_1.Actor {
                     requestParams: params,
                     body: body,
                 };
-                const handler = getHandler_1.getHandler(req, this.props.endpoints, this.props.sharedFiles, this.props.fallbackFile, method, urlParts);
+                const handler = (0, getHandler_1.getHandler)(req, this.props.endpoints, this.props.sharedFiles, this.props.fallbackFile, method, urlParts);
                 let endpointEffects;
                 try {
                     endpointEffects = await handler(endpointRequest);
                 }
                 catch (err) {
-                    endpointEffects = errorToEffects_1.errorToEffects(err);
+                    endpointEffects = (0, errorToEffects_1.errorToEffects)(err);
                 }
-                await applyEndpointEffects_1.applyEndpointEffects(endpointEffects, req, res, this.props.cacheDirectory, session);
+                await (0, applyEndpointEffects_1.applyEndpointEffects)(endpointEffects, req, res, this.props.cacheDirectory, session);
             }
             catch (err) {
                 console.error(err);

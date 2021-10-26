@@ -18,7 +18,7 @@ async function applySendJsonEffect(effect, context) {
     const text = JSON.stringify(effect.content);
     const buffer = Buffer.from(text);
     context.res.setHeader("Content-Type", "application/json");
-    const acceptsGzip = acceptsGzipGivenEffectContext_1.acceptsGzipGivenEffectContext(context);
+    const acceptsGzip = (0, acceptsGzipGivenEffectContext_1.acceptsGzipGivenEffectContext)(context);
     if (acceptsGzip) {
         const gzipBuffer = await gzipBufferGivenBuffer(buffer);
         context.res.setHeader("Content-Length", gzipBuffer.length);

@@ -26,7 +26,7 @@ function getHandler(request, endpoints, sharedFiles, fallbackFile, method, urlPa
     }
     let endpoint = optionalEndpointHavingRelativePath(requestRelativePath, endpoints);
     if (endpoint == null) {
-        return handleStatic_1.handleStatic(sharedFiles, fallbackFile);
+        return (0, handleStatic_1.handleStatic)(sharedFiles, fallbackFile);
     }
     let handler = undefined;
     switch (method) {

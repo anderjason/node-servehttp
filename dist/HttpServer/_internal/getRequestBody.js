@@ -28,7 +28,7 @@ function getRequestBody(req) {
             case "application/json":
                 return JSON.parse(body);
             case "application/x-www-form-urlencoded":
-                return objectGivenQueryString_1.objectGivenQueryString(body);
+                return (0, objectGivenQueryString_1.objectGivenQueryString)(body);
             default:
                 return body;
         }

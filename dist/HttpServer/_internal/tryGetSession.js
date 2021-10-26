@@ -8,7 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.tryGetSession = void 0;
 const getCookies_1 = require("./getCookies");
 function tryGetSession(req) {
-    const cookies = getCookies_1.getCookies(req.headers["cookie"]);
+    const cookies = (0, getCookies_1.getCookies)(req.headers["cookie"]);
     const sessionKey = cookies.session; // TODO configurable cookie name
     if (sessionKey == null) {
         return Promise.resolve(undefined);

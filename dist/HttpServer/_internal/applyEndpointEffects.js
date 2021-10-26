@@ -14,8 +14,8 @@ async function ensureSession(currentSession, res) {
     if (currentSession != null) {
         return currentSession;
     }
-    const session = await startSession_1.startSession();
-    res.setHeader("Set-Cookie", cookieHeader_1.cookieHeader("session", session.sessionKey) // TODO configure cookie name
+    const session = await (0, startSession_1.startSession)();
+    res.setHeader("Set-Cookie", (0, cookieHeader_1.cookieHeader)("session", session.sessionKey) // TODO configure cookie name
     );
     return session;
 }
@@ -49,27 +49,27 @@ async function applyEndpointEffects(endpointEffects, req, res, cacheDirectory, c
         await util_1.PromiseUtil.asyncSequenceGivenArrayAndCallback(endpointEffects, async (effect) => {
             switch (effect.type) {
                 case "mergeHeaders":
-                    await applyMergeHeadersEffect_1.applyMergeHeadersEffect(effect, context);
+                    await (0, applyMergeHeadersEffect_1.applyMergeHeadersEffect)(effect, context);
                     break;
                 case "mergeSessionProperties":
-                    await applyMergeSessionPropertiesEffect_1.applyMergeSessionPropertiesEffect(effect, context);
+                    await (0, applyMergeSessionPropertiesEffect_1.applyMergeSessionPropertiesEffect)(effect, context);
                     break;
                 case "setStatusCode":
-                    await applySetStatusCodeEffect_1.applySetStatusCodeEffect(effect, context);
+                    await (0, applySetStatusCodeEffect_1.applySetStatusCodeEffect)(effect, context);
                     break;
                 case "sendJson":
                     if (req.method !== "HEAD") {
-                        await applySendJsonEffect_1.applySendJsonEffect(effect, context);
+                        await (0, applySendJsonEffect_1.applySendJsonEffect)(effect, context);
                     }
                     break;
                 case "sendCustomBody":
                     if (req.method !== "HEAD") {
-                        await applySendCustomBodyEffect_1.applySendCustomBodyEffect(effect, context);
+                        await (0, applySendCustomBodyEffect_1.applySendCustomBodyEffect)(effect, context);
                     }
                     break;
                 case "sendFile":
                     if (req.method !== "HEAD") {
-                        await applySendFileEffect_1.applySendFileEffect(effect, context, cacheDirectory);
+                        await (0, applySendFileEffect_1.applySendFileEffect)(effect, context, cacheDirectory);
                     }
                     break;
                 default:

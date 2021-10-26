@@ -18,7 +18,7 @@ function handleStatic(sharedFiles, fallbackFile) {
         }
         else {
             if (fallbackFile == null) {
-                return handleNotFound_1.handleNotFound();
+                return (0, handleNotFound_1.handleNotFound)();
             }
             serverAbsoluteFile = fallbackFile;
         }
