@@ -9,6 +9,7 @@ export interface HttpServerProps {
     port: number;
     endpoints: Endpoint[];
     cacheDirectory: LocalDirectory;
+    staticDirectory?: LocalDirectory;
     sharedFiles?: HttpSharedFile[];
     fallbackFile?: LocalFile;
 }
@@ -16,7 +17,9 @@ export declare class HttpServer extends Actor<HttpServerProps> {
     private _isListening;
     readonly isListening: ReadOnlyObservable<boolean>;
     private _websocketServer;
+    private _sharedFiles;
     get websocketServer(): WebsocketServer;
     onActivate(): void;
+    private getSharedFiles;
     private handleRequest;
 }

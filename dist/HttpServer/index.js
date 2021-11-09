@@ -11,7 +11,14 @@ const Session_1 = require("../Session");
 const errorToEffects_1 = require("./_internal/errorToEffects");
 const getHandler_1 = require("./_internal/getHandler");
 const WebsocketServer_1 = require("../WebsocketServer");
-const knownMethods = new Set(["GET", "PUT", "POST", "DELETE", "OPTIONS"]);
+const HttpSharedFile_1 = require("../HttpSharedFile");
+const knownMethods = new Set([
+    "GET",
+    "PUT",
+    "POST",
+    "DELETE",
+    "OPTIONS",
+]);
 class HttpServer extends skytree_1.Actor {
     constructor() {
         super(...arguments);
@@ -51,7 +58,8 @@ class HttpServer extends skytree_1.Actor {
                     requestParams: params,
                     body: body,
                 };
-                const handler = (0, getHandler_1.getHandler)(req, this.props.endpoints, this.props.sharedFiles, this.props.fallbackFile, method, urlParts);
+                const sharedFiles = await this.getSharedFiles();
+                const handler = (0, getHandler_1.getHandler)(req, this.props.endpoints, sharedFiles, this.props.fallbackFile, method, urlParts);
                 let endpointEffects;
                 try {
                     endpointEffects = await handler(endpointRequest);
@@ -74,7 +82,7 @@ class HttpServer extends skytree_1.Actor {
     onActivate() {
         const httpServer = http.createServer(this.handleRequest);
         this._websocketServer = this.addActor(new WebsocketServer_1.WebsocketServer({
-            httpServer
+            httpServer,
         }));
         httpServer.listen(this.props.port, () => {
             this._isListening.setValue(true);
@@ -84,6 +92,24 @@ class HttpServer extends skytree_1.Actor {
                 this._isListening.setValue(false);
             });
         }));
+    }
+    async getSharedFiles() {
+        var _a;
+        const { staticDirectory } = this.props;
+        if (this._sharedFiles == null) {
+            this._sharedFiles = (_a = this.props.sharedFiles) !== null && _a !== void 0 ? _a : [];
+            if (staticDirectory != null) {
+                const staticFiles = await staticDirectory.toDescendantFiles();
+                for (const file of staticFiles) {
+                    const relativePath = staticDirectory.toRelativePathParts(file);
+                    if (relativePath.some(p => p === ".DS_Store")) {
+                        continue;
+                    }
+                    this._sharedFiles.push(HttpSharedFile_1.HttpSharedFile.givenLocalFile(file, ...relativePath));
+                }
+            }
+        }
+        return this._sharedFiles;
     }
 }
 exports.HttpServer = HttpServer;

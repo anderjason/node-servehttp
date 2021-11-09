@@ -1,4 +1,5 @@
 import { Endpoint } from "./Endpoint";
 import { HttpServer } from "./HttpServer";
 import { Session } from "./Session";
-export { HttpServer, Endpoint, Session };
+import { HttpSharedFile } from "./HttpSharedFile";
+export { HttpServer, Endpoint, Session, HttpSharedFile };
