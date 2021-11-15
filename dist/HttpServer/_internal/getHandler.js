@@ -44,6 +44,7 @@ function getHandler(request, endpoints, sharedFiles, fallbackFile, method, urlPa
             break;
         case "POST":
             handler = endpoint.handlePost;
+            break;
         case "PATCH":
             handler = endpoint.handlePatch;
             break;
