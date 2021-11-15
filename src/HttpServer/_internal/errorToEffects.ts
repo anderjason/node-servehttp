@@ -5,6 +5,10 @@ export function errorToEffects(err: Error): EndpointEffect[] {
 
   return [
     {
+      type: "setStatusCode",
+      code: 500
+    },
+    {
       type: "sendJson",
       content: {
         errorDescription: err.message

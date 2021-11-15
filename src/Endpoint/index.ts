@@ -69,6 +69,7 @@ interface EndpointDefinition {
   handlePost?: EndpointHandler;
   handleDelete?: EndpointHandler;
   handlePut?: EndpointHandler;
+  handlePatch?: EndpointHandler;
 }
 
 export class Endpoint {
@@ -77,6 +78,7 @@ export class Endpoint {
   readonly handlePost?: EndpointHandler;
   readonly handleDelete?: EndpointHandler;
   readonly handlePut?: EndpointHandler;
+  readonly handlePatch?: EndpointHandler;
 
   constructor(definition: EndpointDefinition) {
     this.relativePath = definition.relativePath;
@@ -84,5 +86,6 @@ export class Endpoint {
     this.handlePost = definition.handlePost;
     this.handlePut = definition.handlePut;
     this.handleDelete = definition.handleDelete;
+    this.handlePatch = definition.handlePatch;
   }
 }

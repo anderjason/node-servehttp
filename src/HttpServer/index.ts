@@ -17,11 +17,12 @@ import { LocalDirectory, LocalFile } from "@anderjason/node-filesystem";
 import { WebsocketServer } from "../WebsocketServer";
 import { HttpSharedFile } from "../HttpSharedFile";
 
-export type HttpMethod = "HEAD" | "GET" | "PUT" | "POST" | "DELETE" | "OPTIONS";
+export type HttpMethod = "HEAD" | "GET" | "PUT" | "POST" | "PATCH" | "DELETE" | "OPTIONS";
 const knownMethods: Set<HttpMethod> = new Set([
   "GET",
   "PUT",
   "POST",
+  "PATCH",
   "DELETE",
   "OPTIONS",
 ]);

@@ -16,6 +16,7 @@ const knownMethods = new Set([
     "GET",
     "PUT",
     "POST",
+    "PATCH",
     "DELETE",
     "OPTIONS",
 ]);

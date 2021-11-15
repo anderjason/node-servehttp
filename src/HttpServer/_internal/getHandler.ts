@@ -66,6 +66,8 @@ export function getHandler(
       break;
     case "POST":
       handler = endpoint.handlePost;
+    case "PATCH":
+      handler = endpoint.handlePatch;
       break;
     default:
       break;

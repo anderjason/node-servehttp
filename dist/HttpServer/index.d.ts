@@ -4,7 +4,7 @@ import { Endpoint } from "../Endpoint";
 import { LocalDirectory, LocalFile } from "@anderjason/node-filesystem";
 import { WebsocketServer } from "../WebsocketServer";
 import { HttpSharedFile } from "../HttpSharedFile";
-export declare type HttpMethod = "HEAD" | "GET" | "PUT" | "POST" | "DELETE" | "OPTIONS";
+export declare type HttpMethod = "HEAD" | "GET" | "PUT" | "POST" | "PATCH" | "DELETE" | "OPTIONS";
 export interface HttpServerProps {
     port: number;
     endpoints: Endpoint[];

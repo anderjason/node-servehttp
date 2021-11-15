@@ -5,6 +5,10 @@ function errorToEffects(err) {
     console.error(err);
     return [
         {
+            type: "setStatusCode",
+            code: 500
+        },
+        {
             type: "sendJson",
             content: {
                 errorDescription: err.message

@@ -8,6 +8,7 @@ class Endpoint {
         this.handlePost = definition.handlePost;
         this.handlePut = definition.handlePut;
         this.handleDelete = definition.handleDelete;
+        this.handlePatch = definition.handlePatch;
     }
 }
 exports.Endpoint = Endpoint;

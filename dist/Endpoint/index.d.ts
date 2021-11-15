@@ -49,6 +49,7 @@ interface EndpointDefinition {
     handlePost?: EndpointHandler;
     handleDelete?: EndpointHandler;
     handlePut?: EndpointHandler;
+    handlePatch?: EndpointHandler;
 }
 export declare class Endpoint {
     readonly relativePath?: string | RegExp;
@@ -56,6 +57,7 @@ export declare class Endpoint {
     readonly handlePost?: EndpointHandler;
     readonly handleDelete?: EndpointHandler;
     readonly handlePut?: EndpointHandler;
+    readonly handlePatch?: EndpointHandler;
     constructor(definition: EndpointDefinition);
 }
 export {};
