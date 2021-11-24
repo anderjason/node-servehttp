@@ -7,6 +7,7 @@ function handleStatic(sharedFiles, fallbackFile) {
         return handleNotFound_1.handleNotFound;
     }
     return async (req) => {
+        var _a;
         const relativeUrl = req.relativePath.replace(/^\/?(.*)/, "$1");
         let serverAbsoluteFile;
         let publicFile;
@@ -17,7 +18,8 @@ function handleStatic(sharedFiles, fallbackFile) {
             serverAbsoluteFile = publicFile.toLocalFile();
         }
         else {
-            if (fallbackFile == null) {
+            const accept = (_a = req.headers["accept"]) !== null && _a !== void 0 ? _a : "";
+            if (fallbackFile == null || !accept.includes("text/html")) {
                 return (0, handleNotFound_1.handleNotFound)();
             }
             serverAbsoluteFile = fallbackFile;

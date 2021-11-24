@@ -29,7 +29,9 @@ export function handleStatic(
     if (publicFile != null) {
       serverAbsoluteFile = publicFile.toLocalFile();
     } else {
-      if (fallbackFile == null) {
+      const accept = req.headers["accept"] ?? "";
+
+      if (fallbackFile == null || !accept.includes("text/html")) {
         return handleNotFound();
       }
 
