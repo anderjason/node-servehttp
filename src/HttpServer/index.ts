@@ -17,7 +17,14 @@ import { LocalDirectory, LocalFile } from "@anderjason/node-filesystem";
 import { WebsocketServer } from "../WebsocketServer";
 import { HttpSharedFile } from "../HttpSharedFile";
 
-export type HttpMethod = "HEAD" | "GET" | "PUT" | "POST" | "PATCH" | "DELETE" | "OPTIONS";
+export type HttpMethod =
+  | "HEAD"
+  | "GET"
+  | "PUT"
+  | "POST"
+  | "PATCH"
+  | "DELETE"
+  | "OPTIONS";
 const knownMethods: Set<HttpMethod> = new Set([
   "GET",
   "PUT",
@@ -35,6 +42,7 @@ export interface HttpServerProps {
   staticDirectory?: LocalDirectory;
   sharedFiles?: HttpSharedFile[];
   fallbackFile?: LocalFile;
+  host?: string;
 }
 
 export class HttpServer extends Actor<HttpServerProps> {
@@ -57,7 +65,7 @@ export class HttpServer extends Actor<HttpServerProps> {
       })
     );
 
-    httpServer.listen(this.props.port, () => {
+    httpServer.listen(this.props.port, this.props.host ?? "0.0.0.0", () => {
       this._isListening.setValue(true);
     });
 
@@ -78,14 +86,16 @@ export class HttpServer extends Actor<HttpServerProps> {
 
       if (staticDirectory != null) {
         const staticFiles = await staticDirectory.toDescendantFiles();
-        
+
         for (const file of staticFiles) {
           const relativePath = staticDirectory.toRelativePathParts(file);
-          if (relativePath.some(p => p === ".DS_Store")) {
+          if (relativePath.some((p) => p === ".DS_Store")) {
             continue;
           }
-          
-          this._sharedFiles.push(HttpSharedFile.givenLocalFile(file, ...relativePath));
+
+          this._sharedFiles.push(
+            HttpSharedFile.givenLocalFile(file, ...relativePath)
+          );
         }
       }
     }

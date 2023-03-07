@@ -12,6 +12,7 @@ export interface HttpServerProps {
     staticDirectory?: LocalDirectory;
     sharedFiles?: HttpSharedFile[];
     fallbackFile?: LocalFile;
+    host?: string;
 }
 export declare class HttpServer extends Actor<HttpServerProps> {
     private _isListening;

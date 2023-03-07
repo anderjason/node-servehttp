@@ -81,11 +81,12 @@ class HttpServer extends skytree_1.Actor {
         return this._websocketServer;
     }
     onActivate() {
+        var _a;
         const httpServer = http.createServer(this.handleRequest);
         this._websocketServer = this.addActor(new WebsocketServer_1.WebsocketServer({
             httpServer,
         }));
-        httpServer.listen(this.props.port, () => {
+        httpServer.listen(this.props.port, (_a = this.props.host) !== null && _a !== void 0 ? _a : "0.0.0.0", () => {
             this._isListening.setValue(true);
         });
         this.cancelOnDeactivate(new observable_1.Receipt(() => {
@@ -103,7 +104,7 @@ class HttpServer extends skytree_1.Actor {
                 const staticFiles = await staticDirectory.toDescendantFiles();
                 for (const file of staticFiles) {
                     const relativePath = staticDirectory.toRelativePathParts(file);
-                    if (relativePath.some(p => p === ".DS_Store")) {
+                    if (relativePath.some((p) => p === ".DS_Store")) {
                         continue;
                     }
                     this._sharedFiles.push(HttpSharedFile_1.HttpSharedFile.givenLocalFile(file, ...relativePath));
